@@ -9,3 +9,7 @@ edition = "2018"
 [dependencies]
 structopt = "0.3.21"
 lazy_static = "1.4.0"
+protobuf = "1.4"
+
+[build-dependencies]
+protoc-rust = "2.0"
