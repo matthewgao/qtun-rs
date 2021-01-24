@@ -2,6 +2,7 @@ use std::net::{TcpStream};
 use std::sync::Arc;
 use std::io;
 use std::io::Read;
+use std::io::Write;
 
 #[derive(Debug)]
 pub struct Conn{
@@ -31,13 +32,20 @@ impl Conn {
         //     Err(e) => Err(e)
         // }
     }
+
+    fn write(&self, bytes :&Vec::<u8>) -> io::Result<usize> {
+        match self.stream.as_ref().write(bytes){
+            Ok(s) => Ok(s),
+            Err(e) => Err(e)
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests{
     use super::*;
     #[test]
-    fn test_conn() -> (){
+    fn test_read_conn() -> (){
         if let Ok(stream) = TcpStream::connect("139.196.36.44:22") {
             println!("Connected to the server!");
             let c = Conn::new(stream);
@@ -49,5 +57,21 @@ mod tests{
             println!("Couldn't connect to server...");
         }
         println!("conn")
+    }
+
+    #[test]
+    fn test_write_conn() -> () {
+        if let Ok(stream) = TcpStream::connect("127.0.0.1:9000") {
+            println!("Connected to the server!");
+            let c = Conn::new(stream);
+            let chars : &Vec<char> = &vec!['a','b','c','d']; 
+            let bytes = &chars.iter().map(|c| *c as u8).collect::<Vec<_>>();
+            let result = c.write(bytes).unwrap();
+            println!("{:#?}", result);
+            let result = c.read_at_least(10).unwrap();
+            println!("{:#?}", result);
+        } else {
+            println!("Couldn't connect to server...");
+        }
     }
 }
