@@ -9,6 +9,7 @@ mod connection;
 
 use config::opt;
 use connection::message;
+use connection::conn;
 //from_args is a trait from StructOpt, if you want to use in different module, than you need to "use" it first -gs
 // use structopt::StructOpt;
 
@@ -22,4 +23,13 @@ fn main() {
     msg.Timestamp = 10000;
 
     println!("{:#?}", msg)
+}
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+    #[test]
+    fn test_connection() -> (){
+        println!("connection")
+    }
 }
