@@ -11,14 +11,14 @@ pub struct Conn{
 }
 
 impl Conn {
-    fn new(s:TcpStream) -> Conn {
+    pub fn new(s:TcpStream) -> Conn {
         Conn{
             stream: Arc::<TcpStream>::new(s),
             // stream: s,
         }
     }
 
-    fn read_at_least(&self, size: usize) -> io::Result<Vec::<u8>>{
+    pub fn read_at_least(&self, size: usize) -> io::Result<Vec::<u8>>{
         // let mut buf = &mut [u8; size];
         // let mut buf = Vec::<u8>::with_capacity(size);
         let mut buf = vec![0 as u8; size];
@@ -33,7 +33,7 @@ impl Conn {
         // }
     }
 
-    fn write(&self, bytes :&Vec::<u8>) -> io::Result<usize> {
+    pub fn write(&self, bytes :&Vec::<u8>) -> io::Result<usize> {
         match self.stream.as_ref().write(bytes){
             Ok(s) => Ok(s),
             Err(e) => Err(e)
