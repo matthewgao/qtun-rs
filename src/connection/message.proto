@@ -1,6 +1,5 @@
 syntax = "proto3";
-
-option go_package = "qtun/protocol";
+package message;
 
 message Envelope {
 	oneof type {
