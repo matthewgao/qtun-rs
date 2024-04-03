@@ -3,6 +3,7 @@ use std::sync::Arc;
 use std::io;
 use std::io::Read;
 use std::io::Write;
+use super::conn::Conn;
 
 #[derive(Debug)]
 pub struct Client {
@@ -17,7 +18,7 @@ impl Client {
     }
 
     fn connect(&self) -> io::Result<()> {
-
+        Ok(())
     }
 
     fn process(&self) -> () {

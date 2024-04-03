@@ -84,7 +84,7 @@ mod tests{
         };
 
         let server = Server::new("0.0.0.0:11111".to_string(),
-         rf, wf
+            rf, wf
         );
         server.start_listening();
         println!("server exit")
