@@ -1,5 +1,5 @@
 extern crate tun;
-use std::collections::VecDeque;
+use std::{collections::VecDeque, rc::Rc};
 use tun::platform::Queue;
 
 #[derive(Debug)]
@@ -36,14 +36,13 @@ impl PacketQueue {
     }
 }
 
-#[derive(Debug)]
-pub struct PacketManger<'a> {
+pub struct PacketManger {
     queue: PacketQueue,
-    dev: &'a tun::Device<Queue = Queue>,
+    dev: Rc<tun::Device<Queue = Queue>>,
 }
 
 impl PacketManger {
-    fn new() -> Self {
+    pub fn new() -> Self {
         let mut config = tun::Configuration::default();
         config.address((10, 0, 0, 1))
                .netmask((255, 255, 255, 0))
@@ -55,16 +54,20 @@ impl PacketManger {
         });
 
 
-        let mut pm = PacketManger {
+        let pm = PacketManger {
             queue: PacketQueue::new(),
-            dev: &tun::create(&config).unwrap(),
+            dev: Rc::new(tun::create(&config).unwrap()),
         };
 
         // pm.init();
         return pm;
     }
 
-    fn init(&mut self) {
-        
+    pub fn read_packet(&mut self) {
+        let mut buf = [0; 4096];
+        loop {
+            let amount = Rc::get_mut(&mut self.dev).unwrap().read(&mut buf).unwrap();
+            println!("{:?}", &buf[0 .. amount]);
+        }
     }
 }
