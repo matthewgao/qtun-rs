@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package protocol;
+
+message Envelope {
+    oneof type {
+        MessagePing ping = 1;
+        MessagePacket packet = 2;
+    }
+}
+
+message MessagePing {
+    int64  timestamp = 1;
+    string local_addr = 2;
+    string local_private_addr = 3;
+    string ip = 4;
+    string dc = 5;
+}
+
+message MessagePacket {
+    bytes payload = 1;
+}

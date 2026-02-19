@@ -1,18 +1,45 @@
 [package]
-name = "qtun-rs"
-version = "0.1.0"
-authors = ["matthewgao <matthewgao@gmail.com>"]
-edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+name = "qtun"
+version = "1.0.0"
+edition = "2021"
+description = "A VPN tunnel tool based on QUIC protocol"
+authors = ["Matthew Gao"]
 
 [dependencies]
-structopt = "0.3.26"
-lazy_static = "1.4.0"
-prost = "0.12"
-# Only necessary if using Protobuf well-known types:
-prost-types = "0.12"
-tun = "0.6.1"
+tokio = { version = "1", features = ["full", "sync", "time", "process", "net", "io-util", "macros", "rt-multi-thread"] }
+quinn = "0.11"
+rustls = { version = "0.23", default-features = false, features = ["ring", "std"] }
+rcgen = "0.13"
+prost = "0.13"
+tun2 = { version = "4", features = ["async"] }
+clap = { version = "4", features = ["derive"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+aes-gcm = "0.10"
+md-5 = "0.10"
+sha1 = "0.10"
+sha2 = "0.10"
+hex = "0.4"
+base64 = "0.22"
+bytes = "1"
+thiserror = "2"
+anyhow = "1"
+async-trait = "0.1"
+parking_lot = "0.12"
+dashmap = "6"
+axum = "0.8"
+tower-http = { version = "0.6", features = ["fs"] }
+rand = "0.8"
+ipnet = "2"
 
 [build-dependencies]
-prost-build = "0.12"
+# prost-build = "0.13"
+# protobuf-src = "2"
+
+[[bin]]
+name = "qtun"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
